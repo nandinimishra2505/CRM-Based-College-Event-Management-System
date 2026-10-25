@@ -253,6 +253,7 @@ def server_error(_error):
     return jsonify({"error": "An unexpected server error occurred."}), 500
 
 
+init_db()
+
 if __name__ == "__main__":
-    init_db()
-    app.run(debug=True)
+    app.run(debug=False)
