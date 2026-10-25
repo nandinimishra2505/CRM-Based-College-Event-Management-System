@@ -1,88 +1,95 @@
-# CRM-Based College Event Management System with Lead Conversion & Admin Dashboard
-A role-based CRM-inspired web application for managing college events, student registrations, lead tracking, and admin monitoring.
-This project is designed to simulate real-world CRM concepts like lead capture, lead conversion, admin authentication, and registration workflow automation using HTML, CSS, and JavaScript.
+# College Event Management CRM
 
----
-## 🚀 Features
-### 👩‍🎓 Student Portal
-* View available college events
-* Register for events
-* Enter name and phone number
-* Incomplete/invalid registration automatically saved as Lead
+A beginner-friendly full-stack event management project built with Flask, SQLite, HTML, CSS, and vanilla JavaScript.
 
-### 👨‍💼 Admin Dashboard
-* Secure admin login using session-based authentication
-* Protected CRM dashboard access
-* View total events, leads, and registrations
-* Monitor lead conversion lifecycle
-* Track student registrations per event
+## Features
 
-### 🔥 CRM Features
-* Lead generation from incomplete registrations
-* Lead conversion tracking
-* Duplicate prevention using unique user key
-* Registration confirmation simulation
-* LocalStorage-based persistent data management
+- Student portal with event listings and registration form
+- Flask API endpoints for events and registration
+- SQLite persistence for events, leads, and registrations
+- Lead tracking for incomplete registration attempts
+- Lead conversion when a matching student completes registration
+- Duplicate registration prevention per event and phone number
+- Admin login with server-side password hash verification
+- Session-protected admin dashboard
+- Lead status updates: New, Contacted, Converted
+- Dashboard metrics and registration table
 
----
-## 🛠️ Tech Stack
+## Requirements
 
-* HTML5
-* CSS3
-* JavaScript (Vanilla JS)
-* LocalStorage
-* SessionStorage
----
+- Python 3.10 or newer
+- pip
 
-## 📁 Project Structure
-college-event-crm
-index.html      (Student Portal)
-login.html      (Admin Login)
-admin.html      (Protected CRM Dashboard)6
-style.css
-script.js
+## Run locally
 
+1. Extract the project ZIP and open the `college-event-crm` folder in VS Code.
+2. Open the VS Code terminal in that folder.
+3. Create and activate a virtual environment (recommended).
 
-## 🔐 Admin Login Credentials
+Windows PowerShell:
 
-### Username:
-admin
-### Password:
-1234
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+```
 
----
+macOS/Linux:
 
-## ⚙️ How It Works
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
 
-### Step 1: Student Registration
-Students can:
-* View events
-* Register using name + phone number
-  
-### Step 2: Lead Handling
-If:
-* phone number is missing
-* OR phone number is invalid
-The system stores the student as a **Lead**
+4. Install dependencies:
 
-### Step 3: Lead Conversion
-When the same student later completes valid registration:
-* Lead status changes to **Converted**
-* Registration record is created
+```bash
+pip install -r requirements.txt
+```
 
-### Step 4: Admin Monitoring
-Admin can:
-* Login securely
-* Access CRM dashboard
-* Track Leads + Registrations + Converted Leads
+5. Start the application:
 
-## 💡 CRM Logic Implemented
-Incomplete Registration → Lead
+```bash
+python app.py
+```
 
-Valid Registration → Registration
+6. Open `http://127.0.0.1:5000` in your browser.
 
-Existing Lead + Valid Registration → Converted Lead
+The SQLite database is created automatically on first startup.
 
+## Demo admin login
 
-LinkedIn: Your LinkedIn Profile Link
+- Username: `admin`
+- Password: `admin123`
 
+For a different initial password, set `ADMIN_PASSWORD` before the first run. The initial admin account is created only when no `admin` account exists, so changing the environment variable after the database has already been created will not reset its password. Delete `database.db` to recreate the demo database (this also deletes stored demo data).
+
+For PowerShell, before the first run:
+
+```powershell
+$env:ADMIN_PASSWORD = "choose-a-strong-password"
+$env:SECRET_KEY = "a-long-random-secret"
+python app.py
+```
+
+Do not use demo credentials or the development secret in a public deployment.
+
+## Main routes
+
+- `GET /` — student portal
+- `GET /login` — admin login
+- `POST /logout` — log out
+- `GET /admin` — session-protected dashboard
+- `GET /api/events` — event list (JSON)
+- `POST /api/register` — submit interest or complete registration (JSON)
+- `GET /api/dashboard` — CRM dashboard data (admin session required)
+- `POST /api/leads/<id>/status` — update a lead status (admin session required)
+
+## How lead conversion works
+
+An incomplete attempt (missing/invalid phone number) is saved as a lead. When a registration is completed, the app first looks for a lead with the same phone and event, then falls back to a matching name and event. Name matching is only a simple demo fallback and is not a reliable identity check for production use.
+
+## Important notes
+
+- The registration flow is a demo: it does not send real email/SMS notifications.
+- This is suitable as a learning project, not a production-ready deployment. Before public deployment, add CSRF protection for form-based session actions, rate limiting, stronger input validation, secure production cookie settings, database migration/backup practices, and a proper admin password management flow.
+- The development server runs with `debug=True`; do not use it in production.

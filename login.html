@@ -1,32 +1,27 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Admin Login</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Login | CampusConnect</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
-
-<header>
-  🔐 Admin Login
-</header>
-
-<div class="container">
-
-  <div class="card">
-    <h2>Login to CRM Dashboard</h2>
-
-    <input type="text" id="username" placeholder="Username">
-    <br><br>
-
-    <input type="password" id="password" placeholder="Password">
-    <br><br>
-
-    <button onclick="adminLogin()">Login</button>
-  </div>
-
-</div>
-
-<script src="script.js"></script>
+<body class="login-page">
+  <header class="topbar"><a class="brand" href="/">CampusConnect</a><nav><a href="/">Student Portal</a></nav></header>
+  <main class="login-wrap">
+    <section class="form-panel">
+      <p class="eyebrow">ADMIN ACCESS</p><h1>Welcome back.</h1>
+      <p class="muted">Sign in to manage leads and registrations.</p>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}<p class="message error">{{ message }}</p>{% endfor %}
+      {% endwith %}
+      <form method="post">
+        <label for="username">Username</label><input id="username" name="username" required autocomplete="username">
+        <label for="password">Password</label><input id="password" name="password" type="password" required autocomplete="current-password">
+        <button class="button full" type="submit">Sign in</button>
+      </form>
+      <p class="hint">Demo login: <code>admin</code> / <code>admin123</code>. Change this before deploying.</p>
+    </section>
+  </main>
 </body>
 </html>
