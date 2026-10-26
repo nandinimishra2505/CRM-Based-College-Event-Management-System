@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CampusConnect | Events</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/">CampusConnect</a>
+    <nav><a href="#events">Events</a><a href="{{ url_for('login') }}">Admin Login</a></nav>
+  </header>
+  <main class="container">
+    <section class="hero">
+      <p class="eyebrow">COLLEGE EVENT MANAGEMENT</p>
+      <h1>Find your next campus experience.</h1>
+      <p>Explore upcoming events and register in a few simple steps.</p>
+    </section>
+    <section id="events">
+      <div class="section-heading"><div><p class="eyebrow">WHAT'S ON</p><h2>Upcoming events</h2></div></div>
+      <div class="event-grid">
+        {% for event in events %}
+        <article class="event-card">
+          <div class="event-icon">{{ loop.index }}</div>
+          <p class="event-date">{{ event["event_date"] }}</p>
+          <h3>{{ event["title"] }}</h3>
+          <p class="muted">{{ event["description"] }}</p>
+          <p class="venue">⌖ {{ event["venue"] }}</p>
+          <button class="button" onclick='selectEvent({{ event["id"] }}, {{ event["title"]|tojson }})'>Register</button>
+        </article>
+        {% endfor %}
+      </div>
+    </section>
+    <section id="registration" class="form-panel hidden">
+      <div class="section-heading"><div><p class="eyebrow">SAVE YOUR SPOT</p><h2 id="form-title">Event registration</h2></div></div>
+      <form id="registration-form">
+        <input type="hidden" id="event-id">
+        <label for="name">Full name</label><input id="name" name="name" required maxlength="100" placeholder="Your full name">
+        <label for="email">Email address <span class="muted">(required for registration)</span></label><input id="email" name="email" type="email" maxlength="150" placeholder="you@example.com">
+        <label for="phone">Phone number <span class="muted">(required to complete registration)</span></label><input id="phone" name="phone" inputmode="numeric" maxlength="20" placeholder="10-digit phone number">
+        <p class="hint">If you submit without a valid phone number, your interest will be saved as a lead for follow-up.</p>
+        <button class="button" type="submit">Submit</button>
+        <button class="button secondary" type="button" onclick="closeForm()">Cancel</button>
+        <p id="form-message" role="status"></p>
+      </form>
+    </section>
+  </main>
+  <footer>CampusConnect · College Event Management CRM</footer>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
